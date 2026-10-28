@@ -1,12 +1,22 @@
 #!ipxe
 ###
-### netboot.xyz-custom menu
+### netboot.xyz-custom — Omarchy 4.0.6
 ###
 
-:start
-echo Hello world!
-sleep 10
-goto custom_exit
+:custom
+clear custom_choice
+menu Custom Linux Installers
+item --gap -- -------------------------
+item omarchy ${space} Install Omarchy 4.0.6
+choose custom_choice || goto custom_exit
+goto ${custom_choice}
+
+:omarchy
+echo Starting Omarchy 4.0.6...
+kernel https://boot.netboot.xyz/memdisk iso raw
+initrd https://iso.omarchy.org/omarchy-4.0.6.iso
+boot || goto custom_exit
 
 :custom_exit
-exit 0
+chain utils.ipxe
+exit
